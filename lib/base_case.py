@@ -34,3 +34,50 @@ class BaseCase:
                 'firstName': 'learnqa',
                 'lastName': 'learnqa',
                 'email': email}
+
+    def prepare_registration_data_for_fields(self, field):
+        base_part = 'learnqa'
+        domain = 'example.com'
+        random_part = datetime.now().strftime("%m%d%Y%H%M%S")
+        email = f"{base_part}{random_part}@{domain}"
+        if field == 'email':
+            return {'password': '123',
+                    'username': 'learnqa',
+                    'firstName': 'learnqa',
+                    'lastName': 'learnqa',
+                    'email': None}
+        elif field == 'username':
+            return {'password': '123',
+                    'username': None,
+                    'firstName': 'learnqa',
+                    'lastName': 'learnqa',
+                    'email': email}
+        elif field == 'password':
+            return {'password': None,
+                    'username': 'learnqa',
+                    'firstName': 'learnqa',
+                    'lastName': 'learnqa',
+                    'email': email}
+        elif field == 'firstName':
+            return {'password': '123',
+                    'username': 'learnqa',
+                    'firstName': None,
+                    'lastName': 'learnqa',
+                    'email': email}
+        else:
+            return {'password': '123',
+                    'username': 'learnqa',
+                    'firstName': 'learnqa',
+                    'lastName': None,
+                    'email': email}
+
+    def prepare_registration_data_short_name(self, username):
+        base_part = 'learnqa'
+        domain = 'example.com'
+        random_part = datetime.now().strftime("%m%d%Y%H%M%S")
+        email = f"{base_part}{random_part}@{domain}"
+        return {'password': '123',
+                'username': username,
+                'firstName': 'learnqa',
+                'lastName': 'learnqa',
+                'email': email}
