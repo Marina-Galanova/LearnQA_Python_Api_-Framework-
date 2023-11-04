@@ -1,7 +1,10 @@
+import allure
+
 from lib.my_requests import MyRequests
 from lib.base_case import BaseCase
 from lib.assertions import Assertions
 
+@allure.epic("Cases of changing user data")
 class TestUserEdit(BaseCase):
     def setup(self):
         register_data = self.prepare_registration_data()
@@ -15,6 +18,8 @@ class TestUserEdit(BaseCase):
         self.password = register_data['password']
         self.user_id = self.get_json_value(response, "id")
 
+    @allure.feature("Positive")
+    @allure.story("Измение имени у только что созданного пользователя")
     def test_edit_just_created_user(self):
         #REGISTER
         register_data = self.prepare_registration_data()
@@ -64,6 +69,8 @@ class TestUserEdit(BaseCase):
             "Wrong name of the user after edit"
         )
 
+    @allure.feature("Negative")
+    @allure.story("Изменение имени пользователя не авторизованным пользователем")
     def test_edit_user_by_unauthorized_user(self):
         response5 = MyRequests.put(
             f"/user/{self.user_id}",
@@ -73,7 +80,8 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response5, 400)
         Assertions.asser_content_decode(response5, "Auth token not supplied")
 
-
+    @allure.feature("Negative")
+    @allure.story("Изменение имени пользователя другим авторизованным пользователем")
     def test_edit_user_by_another_user(self):
         data = {
             'email': 'vinkotov@example.com',
@@ -94,7 +102,8 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response7, 400)
         Assertions.asser_content_decode(response7, "Please, do not edit test users with ID 1, 2, 3, 4 or 5.")
 
-
+    @allure.feature("Negative")
+    @allure.story("Изменение данных пользователя с некорректным email")
     def test_edit_user_with_incorrect_email(self):
         data = {
             'email': self.email,
@@ -115,6 +124,8 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response9, 400)
         Assertions.asser_content_decode(response9, "Invalid email format")
 
+    @allure.feature("Negative")
+    @allure.story("Изменение данных пользователя со слишком коротким именем")
     def test_edit_user_with_short_firstName(self):
         data = {
             'email': self.email,
